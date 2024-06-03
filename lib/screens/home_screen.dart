@@ -29,88 +29,99 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
                 Obx(
-                  () => ListView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: 10,
-                    itemBuilder: (_, __) {
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 15.0),
-                        child: SizedBox(
-                          width: MediaQuery.of(context).size.width,
-                          height: 60,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  Container(
-                                    width: 60,
-                                    height: 60,
-                                    decoration: BoxDecoration(
-                                        color: Colors.grey[700],
-                                        borderRadius: BorderRadius.circular(15),
-                                        boxShadow: [
-                                          BoxShadow(
-                                              color: Colors.grey[700]!,
-                                              offset: const Offset(4, 4),
-                                              blurRadius: 5)
-                                        ]),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Image.network(
-                                          'https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1547033579'),
+                  () => controller.isLoading.value
+                      ? const Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: controller.coinsState.length,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: const EdgeInsets.only(bottom: 15.0),
+                              child: SizedBox(
+                                width: MediaQuery.of(context).size.width,
+                                height: 60,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Container(
+                                          width: 60,
+                                          height: 60,
+                                          decoration: BoxDecoration(
+                                              color: Colors.grey[700],
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                    color: Colors.grey[700]!,
+                                                    offset: const Offset(4, 4),
+                                                    blurRadius: 5)
+                                              ]),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Image.network(
+                                              controller
+                                                  .coinsState[index].image,
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(width: 20),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            const SizedBox(height: 10),
+                                            Text(
+                                              controller.coinsState[index].name,
+                                              style: textStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            Text(
+                                              '${controller.coinsState[index].priceChangePercentage24H.toStringAsFixed(2)}%',
+                                              style: textStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ],
                                     ),
-                                  ),
-                                  const SizedBox(width: 20),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      const SizedBox(height: 10),
-                                      Text(
-                                        'Bitcoin',
-                                        style: textStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        const SizedBox(height: 10),
+                                        Text(
+                                          '\$ ${controller.coinsState[index].currentPrice}',
+                                          style: textStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                          ),
                                         ),
-                                      ),
-                                      Text(
-                                        '10%',
-                                        style: textStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ],
+                                        Text(
+                                          controller.coinsState[index].symbol
+                                              .toUpperCase(),
+                                          style: textStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        )
+                                      ],
+                                    )
+                                  ],
+                                ),
                               ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  const SizedBox(height: 10),
-                                  Text(
-                                    '\$ 200',
-                                    style: textStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Text(
-                                    'BI',
-                                    style: textStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  )
-                                ],
-                              )
-                            ],
-                          ),
+                            );
+                          },
                         ),
-                      );
-                    },
-                  ),
                 )
               ],
             ),
